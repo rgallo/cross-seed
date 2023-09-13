@@ -327,7 +327,7 @@ async function fetchCaps(indexer: {
 		throw error;
 	}
 	try {
-		const parsedXml = await xml2js.parseStringPromise(responseText);
+		const parsedXml = await xml2js.parseStringPromise(responseText, {ignoreAttrs: true});
 		return parseTorznabCaps(parsedXml);
 	} catch (_) {
 		const error = new Error(
@@ -491,7 +491,7 @@ async function makeRequests(
 					}
 					return response.text();
 				})
-				.then(xml2js.parseStringPromise)
+				.then(async (responseText) => await xml2js.parseStringPromise(responseText, {ignoreAttrs: true}))
 				.then(parseTorznabResults)
 		)
 	);
